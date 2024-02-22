@@ -12,7 +12,7 @@ class Hazard
 	{
 		let height = hei;
 		let width = wid + 1;
-		let origRow = (224 - ((above + hei)*16))*32;
+		let origRow = (14 - above - hei)*512;
 		let locationBlock = origRow + 31;
 		let locationPixel = 0;
 		

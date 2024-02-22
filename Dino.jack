@@ -16,7 +16,7 @@ class Dino
 		if(upperLeftDrawing = null){
 			do initiateDrawArrays();
 		}
-		let baseLocation = 200*32 + 2;
+		let baseLocation = 199*32 + 2;
 		let height = 0;
 		let runL = true;
 		let runCycles = 0;
@@ -126,6 +126,16 @@ class Dino
 	
 	method void move(char key)
 	{
+		if(height = 0)
+		{
+			let runCycles = runCycles + 1;
+			if(runCycles = 10)
+			{
+				let runCycles = 0;
+				let runL = ~runL;
+			}
+		}
+
 		if((key = 32) & (height = 0))
 		{
 			let jump = true;
@@ -145,43 +155,41 @@ class Dino
 				let height = height - 1;
 			}
 		}
+
 		return;
 	}
 	
-	method void draw(var Array hazards, var int numOfHazards)
+	method Array getDownLeftDrawing()
+	{
+		if(height > 0)
+		{
+			return downLeftStaticDrawing;
+		}
+
+		if(runL){
+			return downLeftRunLDrawing;
+		}
+
+		return downLeftRunRDrawing;
+	}
+
+	method void draw(Array hazards, int numOfHazards)
 	{
 		var int location;
 		var Array downLeft;
 		var Hazard hazard;
-		var int i;
+		var int upperBlock;
+		var int upperBlockPixels;
 
 		let location = baseLocation - (height * 32);
-		
-		let i = 0;
+
+		let upperBlock = Draw.getBlockOfLocation(location);
+		let upperBlockPixels = Draw.getPixelsInBlock(location);
+
 		do Draw.drawBlock(location, upperLeftDrawing);
 		do Draw.drawBlock(location+1, upperRightDrawing);
+		do Draw.drawBlock(location+512, getDownLeftDrawing());
 		
-		if(height = 0)
-		{
-			if(runL){
-				let downLeft = downLeftRunLDrawing;
-			}
-			else{
-				let downLeft = downLeftRunRDrawing;
-			}
-			let runCycles = runCycles + 1;
-			if(runCycles = 10)
-			{
-				let runCycles = 0;
-				let runL = ~runL;
-			}
-		}
-		else
-		{
-			let downLeft = downLeftStaticDrawing;
-		}
-		
-		do Draw.drawBlock(location+512, downLeft);
 		return;
 	}
 	

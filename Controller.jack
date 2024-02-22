@@ -60,15 +60,17 @@ class Controller
 				}
 			}
 			
-			if((MathPlus.modulu(cycles, 1024) = 0))
+			if((MathPlus.modulu(cycles, 2048) = 0))
 			{
 				let hazards[numOfHazards] = Hazard.new(0, 1, 2);
 				
 				let numOfHazards = numOfHazards + 1;
 			}
 			
-			do dino.draw(hazards);
+			do dino.draw(hazards, numOfHazards);
 			let cycles = cycles + 1;
+			do Output.moveCursor(0,0);
+			do Output.printInt(cycles);
 		}
 		return;
 	}
