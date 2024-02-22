@@ -1,0 +1,29 @@
+class Random
+{
+	field int rand;
+	constructor Random new(int seed)
+	{
+		let rand = seed;
+		return this;
+	}
+	
+	method void dispose()
+	{
+		do Memory.deAlloc(this);
+		return;
+	}
+	
+	method void setSeed(int seed)
+	{
+		let rand = seed;
+		return;
+	}
+	
+	method int rand()
+	{
+		let rand = (rand*7621)+1;
+		let rand = Utilities.modulu(rand, 32767);
+		return rand;
+	}
+}
+

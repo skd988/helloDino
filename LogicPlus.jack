@@ -1,0 +1,62 @@
+class LogicPlus
+{
+	function int shiftRight(int num)
+	{
+		if (num < 0)
+		{
+			let num = ~num;
+			let num = num / 2;
+			let num = ~num;
+			return num & 32767;
+		}
+		return num / 2;
+	}
+
+	function int shiftLeft(int num)
+	{
+		if (num < 0)
+		{
+			let num = ~num;
+			let num = num * 2;
+			let num = ~num;
+			return num & -2;
+		}
+		return num * 2;
+	}
+
+	function int shiftRightMultiple(int num, int toShift)
+	{
+		if(num < 0)
+		{
+			if(num = -1)
+			{
+				let num = 32767;
+			}
+			else
+			{
+				let num = num / 2;
+				let num = num & 32767;				
+			}
+			
+			let toShift = toShift - 1;
+		}
+		while(toShift > 0)
+		{
+			let num = num / 2;
+			let toShift = toShift - 1;
+		}
+
+		return num;
+	}
+	
+	function int shiftLeftMultiple(int num, int toShift)
+	{
+		while(toShift > 0)
+		{
+			let num = num * 2;
+			let toShift = toShift - 1;
+		}
+		return num;
+	}
+}
+

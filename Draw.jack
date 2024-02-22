@@ -1,0 +1,119 @@
+class Draw{
+    function void drawBlock(int locationBlock, Array block)
+    {
+        var int memAddress;
+        let memAddress = 16384 + locationBlock;
+        do Memory.poke(memAddress, block[0]);
+        do Memory.poke(memAddress+32, block[1]);
+        do Memory.poke(memAddress+64, block[2]);
+        do Memory.poke(memAddress+96, block[3]);
+        do Memory.poke(memAddress+128, block[4]);
+        do Memory.poke(memAddress+160, block[5]);
+        do Memory.poke(memAddress+192, block[6]);
+        do Memory.poke(memAddress+224, block[7]);
+        do Memory.poke(memAddress+256, block[8]);
+        do Memory.poke(memAddress+288, block[9]);
+        do Memory.poke(memAddress+320, block[10]);
+        do Memory.poke(memAddress+352, block[11]);
+        do Memory.poke(memAddress+384, block[12]);
+        do Memory.poke(memAddress+416, block[13]);
+        do Memory.poke(memAddress+448, block[14]);
+        do Memory.poke(memAddress+480, block[15]);
+        return;
+    }
+
+    function void drawBlocks(int memAddress, Array blocks, int startCol, int height, int width)
+    {
+        var int row;
+        var int col;
+        var int currAddress;
+        var Array arrRow;
+
+        let row = 0;
+        while(row < height)
+        {
+            let col = startCol;
+            let arrRow = blocks[row];
+            while(col < width)
+            { 
+                do Draw.drawBlock(memAddress + (row * 512) + col, arrRow[col]);
+
+                let col = col + 1;
+            }
+            let row = row + 1;
+        }
+        return;
+    }
+
+    function void shiftBlockRight(Array block)
+    {
+        var int row;
+        let row = 0;
+        while(row < 16)
+        {
+            let block[row] =  LogicPlus.shiftRight(block[row]);
+            let row = row + 1;
+        }
+        return;
+    }
+
+    function void moveBlockPixelLeft(Array block, Array nextBlock)
+    {
+        var int row;
+        var int addedBit;
+        let row = 0;
+        while(row < 16)
+        {
+            let block[row] = LogicPlus.shiftRight(block[row]);
+            let addedBit = ((nextBlock[row] & 1) > 0) & (-32767 - 1);
+            let block[row] = block[row] | addedBit;
+            let row = row + 1;
+        }
+        return;
+    }
+    
+    function void moveBlocksPixelLeft(Array blocks, int height, int width)
+    {
+        var int row;
+        var int col;
+        var Array blockRow;
+        let row = 0;
+        while(row < height)
+        {
+            let blockRow = blocks[row];
+            let col = 0;
+            while(col < (width - 1))
+            {
+                do Draw.moveBlockPixelLeft(blockRow[col], blockRow[col+1]);
+                let col = col + 1;
+            }
+            do Draw.shiftBlockRight(blockRow[col]);
+            let row = row + 1;
+        }
+        return;
+    }
+
+    function void shiftBlocksRightCircular(Array arr, int height, int width)
+    {
+        var int row;
+        var int col;
+        var Array arrRow;
+        var Array rightMost;
+        let row = 0;
+        while(row < height)
+        {
+            let arrRow = arr[row];
+            let rightMost = arrRow[width - 1];
+            let col = width;
+            while(col > 0)
+            {
+                let arrRow[col] = arrRow[col - 1];
+                let col = col - 1;
+            }
+            let arrRow[0] = rightMost;
+            let row = row + 1;
+        }
+        return;
+    }
+}
+

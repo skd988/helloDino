@@ -1,0 +1,74 @@
+class Main
+{
+	function void draw() {
+		var Array oneOneDraw;
+		var int i;
+		var int mem;
+
+		let oneOneDraw = Array.new(16);
+		let oneOneDraw[0] = -1;
+		let oneOneDraw[1] = -1;
+		let oneOneDraw[2] = -1;
+		let oneOneDraw[3] = -1;
+		let oneOneDraw[4] = -1;
+		let oneOneDraw[5] = -1;
+		let oneOneDraw[6] = -1;
+		let oneOneDraw[7] = -1;
+		let oneOneDraw[8] = -1;
+		let oneOneDraw[9] = -1;
+		let oneOneDraw[10] = -1;
+		let oneOneDraw[11] = -1;
+		let oneOneDraw[12] = -1;
+		let oneOneDraw[13] = -1;
+		let oneOneDraw[14] = -1;
+		let oneOneDraw[15] = -1;
+		
+		let i = 0;
+		
+		while(i < 16)
+		{
+			let mem = 16384;// + (32*i);
+			do Utilities.drawSplit(mem, oneOneDraw, i, true, true);
+			do Sys.wait(100);
+			do Screen.clearScreen();
+			let i = i + 1;
+		}
+		
+		/*
+		while(i < 16)
+		{
+			let mem = 16384;// + (32*i);
+			do Output.moveCursor(15,0);
+			//do Output.printInt(mem);
+			do Utilities.draw(mem, oneOneDraw);
+			do Sys.wait(1000);
+			//do Screen.clearScreen();
+			let i = i + 1;
+		}
+
+		
+		let i = 0;
+		while(i < 16)
+		{
+			do Utilities.splitPoke(16384+(i*32), oneOneDraw[i], 0, true, true);
+			let i = i + 1;
+		}
+		*/
+		let oneOneDraw = Array.new(16);
+		let oneOneDraw[0] = 1;
+
+		
+
+		return;
+
+	}
+	function void main() {
+		
+		var Controller cont;
+		//do Main.draw();
+		let cont = Controller.new(100);
+		do cont.run();
+		return;
+	}
+}
+

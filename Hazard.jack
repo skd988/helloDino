@@ -1,0 +1,154 @@
+class Hazard
+{
+	field int locationBlock;
+	field int locationPixel;
+	field int origRow;
+	field int width;
+	field int height;
+	field Array drawArray;
+	static Array oneOneDraw;
+	
+	constructor Hazard new(int above, int hei, int wid)
+	{
+		let height = hei;
+		let width = wid + 1;
+		let origRow = (224 - ((above + hei)*16))*32;
+		let locationBlock = origRow + 31;
+		let locationPixel = 0;
+		
+		do initiateDrawArrays();
+		return this;
+	}
+	
+	method void dispose()
+	{
+		var int row;
+		var int col;
+		var Array arrRow;
+		var Array block;
+		let row = 0;
+		while(row < height)
+		{
+			let col = 0;
+			let arrRow = drawArray[row];
+			while(col < width)
+			{
+				let block = arrRow[col];
+				do block.dispose();
+				let col = col + 1;
+			}
+			do arrRow.dispose();
+			let row = row + 1;
+		}
+		do drawArray.dispose();
+		do Memory.deAlloc(this);
+		return;
+	}
+	
+	method void initiateDrawArrays()
+	{
+		var int row;
+		var int col;
+		var int i;
+		var Array arrRow;
+		var Array block;
+
+		let row = 0;
+
+		let drawArray = Array.new(height);
+		while(row < height)
+		{
+			let drawArray[row] = Array.new(width);
+			let arrRow = drawArray[row];
+			let arrRow[0] = Array.new(16);
+			let block = arrRow[0];
+			let i = 0;
+			while(i < 16)
+			{
+				let block[i] = 0;
+				let i = i + 1;
+			}
+			let col = 1;
+
+			while(col < width)
+			{
+				let arrRow[col] = Array.new(16);
+				let block = arrRow[col];
+
+				let block[0] = 0;
+				let block[1] = 0;
+				let block[2] = 384;
+				let block[3] = 968;
+				let block[4] = 968;
+				let block[5] = 968;
+				let block[6] = 968;
+				let block[7] = 5064;
+				let block[8] = 5064;
+				let block[9] = 5080;
+				let block[10] = 5104;
+				let block[11] = 7104;
+				let block[12] = 4032;
+				let block[13] = 1984;
+				let block[14] = 960;
+				let block[15] = 960;
+	
+				let col = col + 1;
+			}
+			let row = row + 1;
+		}
+		
+		return;
+	}
+	
+	method void draw()
+	{
+		var int leftBlocksOutOfScreen;
+		var int rightBlocksOutOfScreen;
+
+		let leftBlocksOutOfScreen = origRow - locationBlock;
+		if(leftBlocksOutOfScreen < 0)
+		{
+			let leftBlocksOutOfScreen = 0;
+		}
+
+		let rightBlocksOutOfScreen = locationBlock + width - origRow - 32;
+		if(rightBlocksOutOfScreen < 0)
+		{
+			let rightBlocksOutOfScreen = 0;
+		}
+
+		do Draw.drawBlocks(locationBlock, drawArray, leftBlocksOutOfScreen, height, width - rightBlocksOutOfScreen);
+		return;
+	}
+	
+	method boolean move()
+	{
+		do Draw.moveBlocksPixelLeft(drawArray, height, width);
+		let locationPixel = locationPixel + 1;
+		if(locationPixel = 16){
+			do Draw.shiftBlocksRightCircular(drawArray, height, width);
+			let locationBlock = locationBlock - 1;
+			let locationPixel = 0;
+		}
+		return ((locationBlock + width) > origRow);
+	}
+	
+	method int getLocation()
+	{
+		return locationBlock;
+	}
+	
+	function Hazard findHazardAtLocation(Array hazards, int numOfHazards, int location)
+	{
+		var Hazard hazard;
+		var int i;
+		let i = 0;
+		while(i < numOfHazards)
+		{
+			let hazard = hazards[i];
+
+			let i = i + 1;
+		}
+		return null;
+	}
+}

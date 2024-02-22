@@ -1,0 +1,25 @@
+class MathPlus
+{
+	function int modulu(int a, int b)
+	{
+		var int m;
+		let m = (a / b) * b;
+		let m = a - m;
+		return m;
+	}
+	
+	function int power(int base, int expo)
+	{
+		var int ans;
+		var int i;
+		let ans = 1;
+		let i = 0;
+		while(i < expo)
+		{
+			let ans = ans * base;
+			let i = i + 1;
+		}
+		return ans;
+	}
+}
+

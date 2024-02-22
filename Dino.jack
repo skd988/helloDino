@@ -1,0 +1,196 @@
+class Dino
+{
+	field int baseLocation;
+	field int height;
+	field int runCycles;
+	field boolean runL;
+	field boolean jump;
+	static Array upperLeftDrawing;
+	static Array upperRightDrawing;
+	static Array downLeftStaticDrawing;
+	static Array downLeftRunLDrawing;
+	static Array downLeftRunRDrawing;
+	
+	constructor Dino new()
+	{
+		if(upperLeftDrawing = null){
+			do initiateDrawArrays();
+		}
+		let baseLocation = 200*32 + 2;
+		let height = 0;
+		let runL = true;
+		let runCycles = 0;
+		return this;
+	}
+	
+	method void dispose()
+	{
+		do Memory.deAlloc(this);
+		return;
+	}
+	
+	method void initiateDrawArrays()
+	{
+		let upperLeftDrawing = Array.new(16);
+		let upperLeftDrawing[0] = 0;
+		let upperLeftDrawing[1] = -4096;
+		let upperLeftDrawing[2] = -10240;
+		let upperLeftDrawing[3] = -2048;
+		let upperLeftDrawing[4] = -2048;
+		let upperLeftDrawing[5] = -2048;
+		let upperLeftDrawing[6] = -2048;
+		let upperLeftDrawing[7] = -2048;
+		let upperLeftDrawing[8] = -2048;
+		let upperLeftDrawing[9] = 30720;
+		let upperLeftDrawing[10] = 32257;
+		let upperLeftDrawing[11] = 32513;
+		let upperLeftDrawing[12] = -125;
+		let upperLeftDrawing[13] = 32711;
+		let upperLeftDrawing[14] = 32767;
+		let upperLeftDrawing[15] = 32767;
+		
+		let upperRightDrawing = Array.new(16);
+		let upperRightDrawing[0] = 0;
+		let upperRightDrawing[1] = 31;
+		let upperRightDrawing[2] = 63;
+		let upperRightDrawing[3] = 63;
+		let upperRightDrawing[4] = 63;
+		let upperRightDrawing[5] = 63;
+		let upperRightDrawing[6] = 63;
+		let upperRightDrawing[7] = 0;
+		let upperRightDrawing[8] = 15;
+		let upperRightDrawing[9] = 0;
+		let upperRightDrawing[10] = 0;
+		let upperRightDrawing[11] = 0;
+		let upperRightDrawing[12] = 1;
+		let upperRightDrawing[13] = 1;
+		let upperRightDrawing[14] = 0;
+		let upperRightDrawing[15] = 0;
+
+		let downLeftStaticDrawing = Array.new(16);
+		let downLeftStaticDrawing[0] = 32766;
+		let downLeftStaticDrawing[1] = 16382;
+		let downLeftStaticDrawing[2] = 8188;
+		let downLeftStaticDrawing[3] = 4088;
+		let downLeftStaticDrawing[4] = 2032;
+		let downLeftStaticDrawing[5] = 1760;
+		let downLeftStaticDrawing[6] = 1120;
+		let downLeftStaticDrawing[7] = 1056;
+		let downLeftStaticDrawing[8] = 3168;
+		let downLeftStaticDrawing[9] = 0;
+		let downLeftStaticDrawing[10] = 0;
+		let downLeftStaticDrawing[11] = 0;
+		let downLeftStaticDrawing[12] = 0;
+		let downLeftStaticDrawing[13] = 0;
+		let downLeftStaticDrawing[14] = 0;
+		let downLeftStaticDrawing[15] = 0;
+
+		let downLeftRunLDrawing = Array.new(16);
+		let downLeftRunLDrawing[0] = 32766;
+		let downLeftRunLDrawing[1] = 16382;
+		let downLeftRunLDrawing[2] = 8188;
+		let downLeftRunLDrawing[3] = 4088;
+		let downLeftRunLDrawing[4] = 2032;
+		let downLeftRunLDrawing[5] = 1632;
+		let downLeftRunLDrawing[6] = 1216;
+		let downLeftRunLDrawing[7] = 1024;
+		let downLeftRunLDrawing[8] = 3072;
+		let downLeftRunLDrawing[9] = 0;
+		let downLeftRunLDrawing[10] = 0;
+		let downLeftRunLDrawing[11] = 0;
+		let downLeftRunLDrawing[12] = 0;
+		let downLeftRunLDrawing[13] = 0;
+		let downLeftRunLDrawing[14] = 0;
+		let downLeftRunLDrawing[15] = 0;
+		
+		let downLeftRunRDrawing = Array.new(16);
+		let downLeftRunRDrawing[0] = 32766;
+		let downLeftRunRDrawing[1] = 16382;
+		let downLeftRunRDrawing[2] = 8188;
+		let downLeftRunRDrawing[3] = 4088;
+		let downLeftRunRDrawing[4] = 2032;
+		let downLeftRunRDrawing[5] = 3296;
+		let downLeftRunRDrawing[6] = 96;
+		let downLeftRunRDrawing[7] = 32;
+		let downLeftRunRDrawing[8] = 96;
+		let downLeftRunRDrawing[9] = 0;
+		let downLeftRunRDrawing[10] = 0;
+		let downLeftRunRDrawing[11] = 0;
+		let downLeftRunRDrawing[12] = 0;
+		let downLeftRunRDrawing[13] = 0;
+		let downLeftRunRDrawing[14] = 0;
+		let downLeftRunRDrawing[15] = 0;
+
+		return;
+	}
+	
+	method void move(char key)
+	{
+		if((key = 32) & (height = 0))
+		{
+			let jump = true;
+		}
+		if(jump)
+		{
+			let height = height + 1;
+			if((~(key = 32)) | (height = 30))
+			{
+				let jump = false;
+			}
+		}
+		else
+		{
+			if(height > 0)
+			{
+				let height = height - 1;
+			}
+		}
+		return;
+	}
+	
+	method void draw(var Array hazards, var int numOfHazards)
+	{
+		var int location;
+		var Array downLeft;
+		var Hazard hazard;
+		var int i;
+
+		let location = baseLocation - (height * 32);
+		
+		let i = 0;
+		do Draw.drawBlock(location, upperLeftDrawing);
+		do Draw.drawBlock(location+1, upperRightDrawing);
+		
+		if(height = 0)
+		{
+			if(runL){
+				let downLeft = downLeftRunLDrawing;
+			}
+			else{
+				let downLeft = downLeftRunRDrawing;
+			}
+			let runCycles = runCycles + 1;
+			if(runCycles = 10)
+			{
+				let runCycles = 0;
+				let runL = ~runL;
+			}
+		}
+		else
+		{
+			let downLeft = downLeftStaticDrawing;
+		}
+		
+		do Draw.drawBlock(location+512, downLeft);
+		return;
+	}
+	
+	method boolean collide(Array hazrads, int numOfHazards)
+	{
+		var Hazard hazard;
+		
+		return false;
+	}
+}
+
+
